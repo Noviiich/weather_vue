@@ -15,12 +15,12 @@
   }
 
   @import url("https://fonts.googleapis.com/css2?family=Lora:wght@400;500&display=swap");
-.weather h1 {
+.weather-container h1 {
   font-size: 80px;
   font-weight: 500;
 }
 
-.weather h1 {
+.weather-container h1 {
   font-size: 45px;
   font-weight: 400;
   margin-top: -10px;
