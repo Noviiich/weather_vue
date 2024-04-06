@@ -10,7 +10,7 @@
 
     <div class="weather-container" v-show="city"> 
       <img :src="img" alt="img" class="weather-icon"/> 
-      <h1 class="temp">{{ celsius + "°C"}}</h1>
+      <h1 class="temp">{{ celsius }}</h1>
       <h2 class="city">{{ city }}</h2>
 
       <div class="details">
@@ -60,7 +60,7 @@ export default {
       return this.data != null ? this.data.main.pressure : ""
     },
     celsius() {
-      return this.data != null ? Math.round(this.data.main.temp) : ""
+      return this.data != null ? Math.round(this.data.main.temp) + "°C": ""
     },
     humidity() {
       return this.data != null ? this.data.main.humidity + "%" : ""
