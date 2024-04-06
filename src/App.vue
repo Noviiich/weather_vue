@@ -2,8 +2,8 @@
   <div class="card">
     <h1>Погода</h1>
     <div class="search">
-      <input type="text" v-model="tempCity" placeholder="Введите название города">
-      <button @click="getWeather(tempCity)">поиск</button>
+      <input type="text" v-model="cityName" placeholder="Введите название города">
+      <button @click="getWeather">поиск</button>
     </div>
 
     <p v-show="error" class="error">{{ error }}</p>
@@ -47,37 +47,42 @@
 export default {
   data() {
     return {
-      name: "clouds",
-      tempCity: "",
-      city: "",
+      cityName: "",
       error: "",
-      humidity: "",
-      pressure: "",
-      celsius: ""
+      data: null
     }
   },
   computed: {
     img() {
       return new URL(`./assets/images/${this.name}.png`, import.meta.url).href;
+    },
+    pressure() {
+      return this.data != null ? this.data.main.pressure : ""
+    },
+    celsius() {
+      return this.data != null ? Math.round(this.data.main.temp) : ""
+    },
+    humidity() {
+      return this.data != null ? this.data.main.humidity + "%" : ""
+    },
+    city() {
+      return this.data != null ? this.data.name : ""
+    },
+    name() {
+      return this.data != null ? this.data.weather[0].main.toLowerCase() : ""
     }
   },
-  created() {
+  mounted() {
     this.checkByIP();
   },
   methods: {
-    async getWeather(val) {
+    async getWeather() {
       try{
-        let response = await fetch(`${import.meta.env.VITE_API_URL}&q=${val}&appid=${import.meta.env.VITE_API_KEY}`);
+        let response = await fetch(`${import.meta.env.VITE_API_URL}&q=${this.cityName}&appid=${import.meta.env.VITE_API_KEY}`);
         if (!response.ok) {
-            throw new Error("Не удается получить данные о погоде")
+            throw new Error("Не удается получить данные о погоде");
         }
-        this.error = "";
-        let data = await response.json();
-        this.city = data.name;
-        this.celsius = Math.round(data.main.temp);
-        this.humidity = data.main.humidity + "%";
-        this.pressure = data.main.pressure;
-	      this.name = data.weather[0].main.toLowerCase();
+        this.data = await response.json();
       } catch (e){
           this.error = e;
       }
@@ -86,12 +91,12 @@ export default {
       try {
         let response = await fetch(`${import.meta.env.VITE_IP_URL}`);
         if (!response.ok) {
-            throw new Error("Ошибка в apiUrl")
+            throw new Error("Ошибка в определении IP")
         }
-        let data = await response.json();
-        if (data.city !==  "") {
-          this.city = data.city;
-          this.getWeather(this.city);
+        let info = await response.json();
+        if (info.city !==  "") {
+          this.cityName = info.city;
+          this.getWeather();
         }
 
       } catch (e) {
