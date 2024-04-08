@@ -7,69 +7,26 @@
     </div>
 
     <p v-show="error" class="error">{{ error }}</p>
-
-    <div class="weather-container" v-show="city"> 
-      <img :src="img" alt="img" class="weather-icon"/> 
-      <h1 class="temp">{{ celsius }}</h1>
-      <h2 class="city">{{ city }}</h2>
-
-      <div class="details">
-        <div class="col">
-          <img src="./assets/images/humidity.png" alt="humidity" />
-            <div class="card-details">
-                <p class="humidity">{{ humidity }}</p>
-                <p>Влажность</p>
-            </div>
-        </div>
-
-        <div class="col">
-          <img src="./assets/images/barometer.png" alt="barometer" />
-
-          <div class="card-details">
-              <p class="pressure">{{ pressure }}</p>
-              <p>Давление</p>
-          </div>
-        </div>
-
-      </div>
-
-      <div class="degree-button">
-        <button class="btn-item1">°C</button>
-        <button class="btn-item2">°F</button>
-      </div>
-
-    </div>
+    <WeatherBox v-for="(el, index) in blocks" :key="index" :data="el" :index="index" :deleteBlock="deleteBlock"/>
   </div>
 
 </template>
 
 <script>
+import WeatherBox from "./components/WeatherBox.vue"
 export default {
+  components: {WeatherBox},
   data() {
     return {
+      blocks: [],
       cityName: "",
       error: "",
       data: null
     }
   },
-  computed: {
-    img() {
-      return new URL(`./assets/images/${this.name}.png`, import.meta.url).href;
-    },
-    pressure() {
-      return this.data != null ? this.data.main.pressure : ""
-    },
-    celsius() {
-      return this.data != null ? Math.round(this.data.main.temp) + "°C": ""
-    },
-    humidity() {
-      return this.data != null ? this.data.main.humidity + "%" : ""
-    },
-    city() {
-      return this.data != null ? this.data.name : ""
-    },
-    name() {
-      return this.data != null ? this.data.weather[0].main.toLowerCase() : ""
+  watch: {
+    data() {
+      this.blocks.push(this.data);
     }
   },
   mounted() {
@@ -83,6 +40,7 @@ export default {
             throw new Error("Не удается получить данные о погоде");
         }
         this.data = await response.json();
+        this.error = "";
       } catch (e){
           this.error = e;
       }
@@ -102,6 +60,9 @@ export default {
       } catch (e) {
           this.error = e;
       }
+    },
+    deleteBlock(index) {
+      this.blocks.splice(index, 1);
     }
 }
 }
