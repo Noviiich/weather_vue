@@ -21,8 +21,8 @@
               <p>Давление</p>
           </div>
         </div>
-
-        <button @click="deleteBlock(index)">Удалить</button>
+        
+        <button @click="deleteBlock(this.secret)">Удалить</button>
 
       </div>
     </div>
@@ -32,11 +32,11 @@
 export default {
     props: {
         data: {
-            type: String,
+            type: Object,
             required: true
         },
-        index: {
-          type: Number,
+        secret: {
+          type: String,
           required: true
         },
         deleteBlock: {
@@ -49,7 +49,7 @@ export default {
       return new URL(`../assets/images/${this.name}.png`, import.meta.url).href;
     },
     pressure() {
-      return this.data != null ? this.data.main.pressure : ""
+      return this.data != null ? this.data.main.pressure : "";
     },
     celsius() {
       return this.data != null ? Math.round(this.data.main.temp) + "°C": ""
