@@ -124,3 +124,14 @@
   padding: 5px 20px;
   color: #fff;
 }
+
+.btn-remove {
+  border: 1px solid #66fb7c;
+  border-radius: 30px;
+  font-size: 20px;
+  text-align: center;
+  background-color: #66fb7c;
+  padding: 5px 20px;
+  color: #fff;
+  cursor: pointer;
+}

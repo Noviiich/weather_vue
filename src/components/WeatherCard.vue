@@ -29,6 +29,7 @@
 </template>
 
 <script>
+
 export default {
     props: {
         data: {
@@ -45,25 +46,25 @@ export default {
         }
     },
     computed: {
-    img() {
-      return new URL(`../assets/images/${this.name}.png`, import.meta.url).href;
-    },
-    pressure() {
-      return this.data != null ? this.data.main.pressure : "";
-    },
-    celsius() {
-      return this.data != null ? Math.round(this.data.main.temp) + "°C": ""
-    },
-    humidity() {
-      return this.data != null ? this.data.main.humidity + "%" : ""
-    },
-    city() {
-      return this.data != null ? this.data.name : ""
-    },
-    name() {
-      return this.data != null ? this.data.weather[0].main.toLowerCase() : ""
+      img() {
+            return new URL(`../assets/images/${this.name}.png`, import.meta.url).href;
+          },
+          pressure() {
+            return this.data != null ? this.data.main.pressure : "";
+          },
+          celsius() {
+            return this.data != null ? Math.round(this.data.main.temp) + "°C": ""
+          },
+          humidity() {
+            return this.data != null ? this.data.main.humidity + "%" : ""
+          },
+          city() {
+            return this.data != null ? this.data.name : ""
+          },
+          name() {
+            return this.data != null ? this.data.weather[0].main.toLowerCase() : ""
+          }
     }
-  }
 }
 
 </script>
